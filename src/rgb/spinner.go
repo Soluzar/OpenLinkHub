@@ -4,14 +4,13 @@ import (
 	"log"
 	"math"
 	"time"
+
 	"golang.org/x/exp/slices"
 )
 
 // Spinner will run RGB function
 func (r *ActiveRGB) Spinner(startTime *time.Time) {
-	//Time elapsed in milliseconds
 	elapsed := time.Since(*startTime).Milliseconds()
-	//Elapsed time divided by ( speed multiplied by 100
 	progress := math.Mod(float64(elapsed)/(r.RgbModeSpeed*1000), 1.0)
 	log.Println("Channels")
 	log.Println(r.LightChannels)
@@ -30,7 +29,6 @@ func (r *ActiveRGB) Spinner(startTime *time.Time) {
 		log.Println("J value")
 		log.Println(j)
 		if len(r.Buffer) > 0 {
-			// If colour values are already in the buffer...
 			isActive := slices.Contains(activeLEDs, j)
 			if isActive {
 				t := float64(activeLEDs[0]) / float64(40)
@@ -44,7 +42,6 @@ func (r *ActiveRGB) Spinner(startTime *time.Time) {
 				r.Buffer[j+(r.ColorOffset*2)] = 0
 			}
 		} else {
-			// Fill the buffer with colour values
 			isActive := slices.Contains(activeLEDs, j)
 			if isActive {
 				t := float64(activeLEDs[0]) / float64(40)
@@ -54,7 +51,6 @@ func (r *ActiveRGB) Spinner(startTime *time.Time) {
 					byte(colors.Green),
 					byte(colors.Blue),
 				}
-
 				if r.IsAIO && r.HasLCD {
 					if j > 15 && j < 20 {
 						buf[j] = []byte{0, 0, 0}
@@ -68,7 +64,6 @@ func (r *ActiveRGB) Spinner(startTime *time.Time) {
 					byte(colors.Green),
 					byte(colors.Blue),
 				}
-
 			}
 		}
 	}
@@ -81,4 +76,3 @@ func (r *ActiveRGB) Spinner(startTime *time.Time) {
 		r.Output = SetColor(buf)
 	}
 }
-
